@@ -11,14 +11,23 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(express.static(__dirname + '/public'));
 
 app.get('/artist', function(req, response){
-    console.log('querying artist');
+    console.log('querying artists');
     modules.artists.findAll().then(function(artists){
         console.log(artists);
         response.send(artists);
     });
 });
 
+app.get('/artist/:id', function(req, response){
+    console.log('querying artist');
+    modules.artists.findAll({where:{id:req.params.id}}).then(function(artist){
+        console.log(`artist name:${artist.name} artist id:${artist.id}`);
+        response.send(artist);
+    });
+});
+
 app.put('/artist/:id', function(req, response){
+
     let updateValues = {};
     if(req.body.name){
         updateValues.name = req.body.name;
